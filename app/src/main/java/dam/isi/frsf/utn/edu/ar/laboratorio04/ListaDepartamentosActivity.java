@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class ListaDepartamentosActivity extends AppCompatActivity implements Bus
     private ListView listaAlojamientos;
     private DepartamentoAdapter departamentosAdapter;
     private List<Departamento> lista;
+
+    private FormBusqueda search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +42,10 @@ public class ListaDepartamentosActivity extends AppCompatActivity implements Bus
         Intent intent = getIntent();
         Boolean esBusqueda = intent.getExtras().getBoolean("esBusqueda");
         if(esBusqueda){
-            FormBusqueda fb = (FormBusqueda ) intent.getSerializableExtra("frmBusqueda");
+            search = (FormBusqueda ) intent.getSerializableExtra("frmBusqueda");
             tvEstadoBusqueda.setText("Buscando....");
             tvEstadoBusqueda.setVisibility(View.VISIBLE);
-            new BuscarDepartamentosTask(ListaDepartamentosActivity.this).execute(fb);
+            new BuscarDepartamentosTask(ListaDepartamentosActivity.this).execute(search);
         }else{
             tvEstadoBusqueda.setVisibility(View.GONE);
             lista=Departamento.getAlojamientosDisponibles();
@@ -55,7 +58,7 @@ public class ListaDepartamentosActivity extends AppCompatActivity implements Bus
     public void busquedaFinalizada(List<Departamento> listaDepartamento) {
         tvEstadoBusqueda.setVisibility(View.GONE);
         System.out.println(listaDepartamento);
-        departamentosAdapter = new DepartamentoAdapter(ListaDepartamentosActivity.this, listaDepartamento);
+        departamentosAdapter = new DepartamentoAdapter(ListaDepartamentosActivity.this, listaDepartamento, search);
         listaAlojamientos.setAdapter(departamentosAdapter);
     }
 

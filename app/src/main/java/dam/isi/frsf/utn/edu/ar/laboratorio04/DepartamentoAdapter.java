@@ -1,6 +1,7 @@
 package dam.isi.frsf.utn.edu.ar.laboratorio04;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +12,18 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import dam.isi.frsf.utn.edu.ar.laboratorio04.modelo.Departamento;
+import dam.isi.frsf.utn.edu.ar.laboratorio04.utils.FormBusqueda;
 
 public class DepartamentoAdapter extends ArrayAdapter<Departamento> {
     private LayoutInflater inflater;
     private Context contexto;
+    final private FormBusqueda searchCriteria;
 
-    public DepartamentoAdapter(Context contexto, List<Departamento> items) {
+
+    public DepartamentoAdapter(Context contexto, List<Departamento> items, FormBusqueda searchCriteria) {
         super(contexto, R.layout.fila, items);
         inflater = LayoutInflater.from(contexto);
+        this.searchCriteria = searchCriteria;
     }
 
     @Override
@@ -34,6 +39,15 @@ public class DepartamentoAdapter extends ArrayAdapter<Departamento> {
         txtPrecio.setText("$" + (df.format(this.getItem(position).getPrecio())));
         TextView txtCapacidad = (TextView) row.findViewById(R.id.capacidadMax);
         txtCapacidad.setText(this.getItem(position).getCapacidadMaxima()+".");
+
+        //Highlight search criteria
+        if(searchCriteria != null) {
+            if(searchCriteria.getCiudad() != null) txtCiudad.setTypeface(Typeface.DEFAULT_BOLD);
+            if(searchCriteria.getPrecioMaximo() != null || searchCriteria.getPrecioMaximo() != null)
+                txtPrecio.setTypeface(Typeface.DEFAULT_BOLD);
+            if(searchCriteria.getHuespedes() != null) txtCapacidad.setTypeface(Typeface.DEFAULT_BOLD);
+        }
+
         return (row);
 
     }
