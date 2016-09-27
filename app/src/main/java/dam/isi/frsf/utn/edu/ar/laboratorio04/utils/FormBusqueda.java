@@ -85,7 +85,7 @@ public class FormBusqueda implements Serializable {
         if(precioMaximo != null && apartment.getPrecio() > precioMaximo) return false;
         if(ciudad != null && !apartment.getCiudad().equals(ciudad)) return false;
         if(permiteFumar != null && apartment.getNoFumador() == permiteFumar) return false;
-        if(huespedes != null && apartment.getCapacidadMaxima() > huespedes) return false;
+        if(huespedes != null && apartment.getCapacidadMaxima() < huespedes) return false;
 
         return true;
     }
