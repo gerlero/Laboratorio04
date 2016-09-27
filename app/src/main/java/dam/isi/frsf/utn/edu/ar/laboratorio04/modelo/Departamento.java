@@ -145,7 +145,7 @@ public class Departamento implements Serializable {
     private static final List<Departamento> _ALOJAMIENTOS_DISPONIBLES= new ArrayList<Departamento>();
     private static Boolean _FLAG_INICIALIZADO = false;
 
-    public static List<Departamento> getAlojamientosDisponibles(){
+    public synchronized static List<Departamento> getAlojamientosDisponibles(){
         Random rReservas = new Random();
         if(_FLAG_INICIALIZADO) return  _ALOJAMIENTOS_DISPONIBLES;
 

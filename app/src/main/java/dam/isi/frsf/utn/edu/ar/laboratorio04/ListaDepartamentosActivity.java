@@ -73,7 +73,7 @@ public class ListaDepartamentosActivity extends AppCompatActivity implements Bus
 
     @Override
     public void busquedaActualizada(String msg) {
-        tvEstadoBusqueda.setText(" Buscando..."+msg);
+        tvEstadoBusqueda.setText("Buscando..."+msg);
     }
 
     @Override
@@ -81,10 +81,15 @@ public class ListaDepartamentosActivity extends AppCompatActivity implements Bus
         switch(v.getId()) {
 
             case R.id.cancelSearchButton:
-                searchTask.cancel(true);
-                finish();
+                finish(); //Same as pressing back - the button is there to advertise the functionality
                 break;
 
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(searchTask != null) searchTask.cancel(true);
     }
 }
