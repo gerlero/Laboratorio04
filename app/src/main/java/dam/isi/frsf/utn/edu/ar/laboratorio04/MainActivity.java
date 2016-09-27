@@ -79,24 +79,31 @@ public class MainActivity extends AppCompatActivity
         btnBuscar.setOnClickListener(btnBusarListener);
     }
 
+
     private View.OnClickListener btnBusarListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             Intent i = new Intent(MainActivity.this,ListaDepartamentosActivity.class);
-            frmBusq.setPermiteFumar(swFumadores.isSelected());
+            frmBusq.setPermiteFumar(swFumadores.isSelected() ? true : null); //Assume no preference if off
+            frmBusq.setHuespedes(Integer.getInteger(txtHuespedes.getText().toString()));
             i.putExtra("esBusqueda",true);
             i.putExtra("frmBusqueda",frmBusq);
             startActivity(i);
         }
     };
 
-    private AdapterView.OnItemSelectedListener comboListener = new  AdapterView.OnItemSelectedListener() {
+    private AdapterView.OnItemSelectedListener comboListener = new AdapterView.OnItemSelectedListener() {
+
+        @Override
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             Ciudad item = (Ciudad) parent.getItemAtPosition(pos);
             frmBusq.setCiudad(item);
             Log.d("MainActivity","ciudad seteada "+item);
         }
+
+        @Override
         public void onNothingSelected(AdapterView<?> parent) {
+            frmBusq.setCiudad(null);
         }
     };
 
@@ -108,11 +115,11 @@ public class MainActivity extends AppCompatActivity
         boolean fromUser) {
             if(seekBar.getId()==R.id.precioMin) {
                 tvPrecioMinimo.setText("Precio Minimo "+progress);
-                frmBusq.setPrecioMinimo(Double.valueOf(progress));
+                frmBusq.setPrecioMinimo((double) progress);
             }
             if(seekBar.getId()==R.id.precioMax) {
                 tvPrecioMaximo.setText("Precio Maximo"+progress);
-                frmBusq.setPrecioMaximo(Double.valueOf(progress));
+                frmBusq.setPrecioMaximo((double) progress);
             }
         }
 
@@ -158,7 +165,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
