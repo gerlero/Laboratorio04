@@ -49,9 +49,9 @@ public class ListaDepartamentosActivity extends AppCompatActivity implements Bus
         }else{
             tvEstadoBusqueda.setVisibility(View.GONE);
             lista=Departamento.getAlojamientosDisponibles();
+            departamentosAdapter = new DepartamentoAdapter(ListaDepartamentosActivity.this, lista, null);
+            listaAlojamientos.setAdapter(departamentosAdapter);
         }
-//        departamentosAdapter = new DepartamentoAdapter(ListaDepartamentosActivity.this,lista);
-//        listaAlojamientos.setAdapter(departamentosAdapter);
     }
 
     @Override
