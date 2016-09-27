@@ -16,35 +16,52 @@ import dam.isi.frsf.utn.edu.ar.laboratorio04.utils.FormBusqueda;
  */
 public class BuscarDepartamentosTask extends AsyncTask<FormBusqueda,Integer,List<Departamento>> {
 
-    private BusquedaFinalizadaListener<Departamento> listener;
+    //Note: nullable field - providing a listener is optional
+    //We cannot use java.util.Optional to express this due to compatibility requirements
+    final private BusquedaFinalizadaListener<Departamento> listener;
 
-    public BuscarDepartamentosTask(BusquedaFinalizadaListener<Departamento> dListener){
-        this.listener = dListener;
-    }
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
+    public BuscarDepartamentosTask(BusquedaFinalizadaListener<Departamento> listener){
+        this.listener = listener;
     }
 
     @Override
     protected void onPostExecute(List<Departamento> departamentos) {
+        if(listener != null) listener.busquedaFinalizada(departamentos);
     }
 
     @Override
     protected void onProgressUpdate(Integer... values) {
-        listener.busquedaActualizada("departamento "+values[0]);
-
-
+        if(listener != null) listener.busquedaActualizada("departamento "+values[values.length-1]);
     }
 
     @Override
     protected List<Departamento> doInBackground(FormBusqueda... busqueda) {
+        //assert(busqueda.length == 1);
+
         List<Departamento> todos = Departamento.getAlojamientosDisponibles();
         List<Departamento> resultado = new ArrayList<Departamento>();
         int contador = 0;
-        Ciudad ciudadBuscada = busqueda[0].getCiudad();
-        // TODO implementar: buscar todos los departamentos del sistema e ir chequeando las condiciones 1 a 1.
+        // DONE implementar: buscar todos los departamentos del sistema e ir chequeando las condiciones 1 a 1.
         // si cumplen las condiciones agregarlo a los resultados.
+        for(Departamento apt : todos) {
+            ++contador;
+
+            for(FormBusqueda criterion : busqueda) {
+                if (criterion.matches(apt)) {
+                    resultado.add(apt);
+                    break;
+                }
+            }
+            publishProgress(contador);
+            if(isCancelled()) break;
+
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
+
         return resultado;
     }
 }
