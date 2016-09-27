@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,37 +18,44 @@ import dam.isi.frsf.utn.edu.ar.laboratorio04.modelo.Departamento;
 import dam.isi.frsf.utn.edu.ar.laboratorio04.utils.BusquedaFinalizadaListener;
 import dam.isi.frsf.utn.edu.ar.laboratorio04.utils.FormBusqueda;
 
-public class ListaDepartamentosActivity extends AppCompatActivity implements BusquedaFinalizadaListener<Departamento> {
+public class ListaDepartamentosActivity extends AppCompatActivity implements BusquedaFinalizadaListener<Departamento>, View.OnClickListener {
 
     private TextView tvEstadoBusqueda;
     private ListView listaAlojamientos;
+    private Button cancelSearchButton;
+
     private DepartamentoAdapter departamentosAdapter;
     private List<Departamento> lista;
 
     private FormBusqueda search;
+    private BuscarDepartamentosTask searchTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_alojamientos);
         lista= new ArrayList<>();
-        listaAlojamientos= (ListView ) findViewById(R.id.listaAlojamientos);
-        tvEstadoBusqueda = (TextView) findViewById(R.id.estadoBusqueda);
 
+        listaAlojamientos = (ListView) findViewById(R.id.listaAlojamientos);
+        tvEstadoBusqueda = (TextView) findViewById(R.id.estadoBusqueda);
+        cancelSearchButton = (Button) findViewById(R.id.cancelSearchButton);
+
+        cancelSearchButton.setOnClickListener(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Intent intent = getIntent();
-        Boolean esBusqueda = intent.getExtras().getBoolean("esBusqueda");
+        boolean esBusqueda = intent.getExtras().getBoolean("esBusqueda");
         if(esBusqueda){
-            search = (FormBusqueda ) intent.getSerializableExtra("frmBusqueda");
+            search = (FormBusqueda) intent.getSerializableExtra("frmBusqueda");
             tvEstadoBusqueda.setText("Buscando....");
-            tvEstadoBusqueda.setVisibility(View.VISIBLE);
-            new BuscarDepartamentosTask(ListaDepartamentosActivity.this).execute(search);
+            searchTask = new BuscarDepartamentosTask(ListaDepartamentosActivity.this);
+            searchTask.execute(search);
         }else{
             tvEstadoBusqueda.setVisibility(View.GONE);
+            cancelSearchButton.setVisibility(View.GONE);
             lista=Departamento.getAlojamientosDisponibles();
             departamentosAdapter = new DepartamentoAdapter(ListaDepartamentosActivity.this, lista, null);
             listaAlojamientos.setAdapter(departamentosAdapter);
@@ -57,6 +65,7 @@ public class ListaDepartamentosActivity extends AppCompatActivity implements Bus
     @Override
     public void busquedaFinalizada(List<Departamento> listaDepartamento) {
         tvEstadoBusqueda.setVisibility(View.GONE);
+        cancelSearchButton.setVisibility(View.GONE);
         System.out.println(listaDepartamento);
         departamentosAdapter = new DepartamentoAdapter(ListaDepartamentosActivity.this, listaDepartamento, search);
         listaAlojamientos.setAdapter(departamentosAdapter);
@@ -67,4 +76,15 @@ public class ListaDepartamentosActivity extends AppCompatActivity implements Bus
         tvEstadoBusqueda.setText(" Buscando..."+msg);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+
+            case R.id.cancelSearchButton:
+                searchTask.cancel(true);
+                finish();
+                break;
+
+        }
+    }
 }
