@@ -17,7 +17,6 @@ import dam.isi.frsf.utn.edu.ar.laboratorio04.utils.FormBusqueda;
 public class BuscarDepartamentosTask extends AsyncTask<FormBusqueda,Integer,List<Departamento>> {
 
     //Note: nullable field - providing a listener is optional
-    //We cannot use java.util.Optional to express this due to compatibility requirements
     final private BusquedaFinalizadaListener<Departamento> listener;
 
     public BuscarDepartamentosTask(BusquedaFinalizadaListener<Departamento> listener){
@@ -31,12 +30,13 @@ public class BuscarDepartamentosTask extends AsyncTask<FormBusqueda,Integer,List
 
     @Override
     protected void onProgressUpdate(Integer... values) {
-        if(listener != null) listener.busquedaActualizada("departamento "+values[values.length-1]);
+        if (listener != null)
+            listener.busquedaActualizada("departamento " + values[values.length - 1]);
     }
 
     @Override
     protected List<Departamento> doInBackground(FormBusqueda... busqueda) {
-        //assert(busqueda.length == 1);
+        if(busqueda.length != 1) throw new IllegalArgumentException("Task expects one and only one argument");
 
         List<Departamento> todos = Departamento.getAlojamientosDisponibles();
         List<Departamento> resultado = new ArrayList<Departamento>();
@@ -44,21 +44,17 @@ public class BuscarDepartamentosTask extends AsyncTask<FormBusqueda,Integer,List
         // DONE implementar: buscar todos los departamentos del sistema e ir chequeando las condiciones 1 a 1.
         // si cumplen las condiciones agregarlo a los resultados.
         for(Departamento apt : todos) {
-            ++contador;
 
-            for(FormBusqueda criterion : busqueda) {
-                if (criterion.matches(apt)) {
-                    resultado.add(apt);
-                    break;
-                }
-            }
-            publishProgress(contador);
-            if(isCancelled()) break;
+            if (busqueda[0].matches(apt)) resultado.add(apt);
+            publishProgress(++contador);
 
+            if(isCancelled()) break; //Explicit check for cancellation
+
+            //Artificial 5 ms wait between iterations
             try {
-                Thread.sleep(10);
+                Thread.sleep(5);
             } catch (InterruptedException e) {
-                break;
+                break; //If canceled while waiting
             }
         }
 
