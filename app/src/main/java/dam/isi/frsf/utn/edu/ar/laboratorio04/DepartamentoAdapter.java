@@ -43,7 +43,7 @@ public class DepartamentoAdapter extends ArrayAdapter<Departamento> {
         //Highlight search criteria
         if(searchCriteria != null) {
             if(searchCriteria.getCiudad() != null) txtCiudad.setTypeface(Typeface.DEFAULT_BOLD);
-            if(searchCriteria.getPrecioMaximo() != null || searchCriteria.getPrecioMaximo() != null)
+            if(searchCriteria.getPrecioMinimo() != null || searchCriteria.getPrecioMaximo() != null)
                 txtPrecio.setTypeface(Typeface.DEFAULT_BOLD);
             if(searchCriteria.getHuespedes() != null) txtCapacidad.setTypeface(Typeface.DEFAULT_BOLD);
         }
