@@ -40,20 +40,23 @@ public class ListaDepartamentosActivity extends AppCompatActivity implements Bus
         Boolean esBusqueda = intent.getExtras().getBoolean("esBusqueda");
         if(esBusqueda){
             FormBusqueda fb = (FormBusqueda ) intent.getSerializableExtra("frmBusqueda");
-            new BuscarDepartamentosTask(ListaDepartamentosActivity.this).execute(fb);
             tvEstadoBusqueda.setText("Buscando....");
             tvEstadoBusqueda.setVisibility(View.VISIBLE);
+            new BuscarDepartamentosTask(ListaDepartamentosActivity.this).execute(fb);
         }else{
             tvEstadoBusqueda.setVisibility(View.GONE);
             lista=Departamento.getAlojamientosDisponibles();
         }
-        departamentosAdapter = new DepartamentoAdapter(ListaDepartamentosActivity.this,lista);
-        listaAlojamientos.setAdapter(departamentosAdapter);
+//        departamentosAdapter = new DepartamentoAdapter(ListaDepartamentosActivity.this,lista);
+//        listaAlojamientos.setAdapter(departamentosAdapter);
     }
 
     @Override
     public void busquedaFinalizada(List<Departamento> listaDepartamento) {
-        //TODO implementar
+        tvEstadoBusqueda.setVisibility(View.GONE);
+        System.out.println(listaDepartamento);
+        departamentosAdapter = new DepartamentoAdapter(ListaDepartamentosActivity.this, listaDepartamento);
+        listaAlojamientos.setAdapter(departamentosAdapter);
     }
 
     @Override
