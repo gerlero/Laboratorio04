@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,7 +19,7 @@ import dam.isi.frsf.utn.edu.ar.laboratorio04.modelo.Departamento;
 import dam.isi.frsf.utn.edu.ar.laboratorio04.utils.BusquedaFinalizadaListener;
 import dam.isi.frsf.utn.edu.ar.laboratorio04.utils.FormBusqueda;
 
-public class ListaDepartamentosActivity extends AppCompatActivity implements BusquedaFinalizadaListener<Departamento>, View.OnClickListener {
+public class ListaDepartamentosActivity extends AppCompatActivity implements BusquedaFinalizadaListener<Departamento>, View.OnClickListener, AdapterView.OnItemClickListener {
 
     private TextView tvEstadoBusqueda;
     private ListView listaAlojamientos;
@@ -40,6 +41,7 @@ public class ListaDepartamentosActivity extends AppCompatActivity implements Bus
         tvEstadoBusqueda = (TextView) findViewById(R.id.estadoBusqueda);
         cancelSearchButton = (Button) findViewById(R.id.cancelSearchButton);
 
+        listaAlojamientos.setOnItemClickListener(this);
         cancelSearchButton.setOnClickListener(this);
     }
 
@@ -86,5 +88,14 @@ public class ListaDepartamentosActivity extends AppCompatActivity implements Bus
                 break;
 
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Departamento selected = (Departamento) departamentosAdapter.getItem(position);
+        assert(selected != null);
+        Intent intent = new Intent(this, AltaReservaActivity.class);
+        intent.putExtra("selectedApartment", selected);
+        startActivity(intent);
     }
 }
