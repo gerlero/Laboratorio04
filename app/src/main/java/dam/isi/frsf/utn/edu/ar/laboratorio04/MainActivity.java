@@ -84,8 +84,15 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onClick(View view) {
             Intent i = new Intent(MainActivity.this,ListaDepartamentosActivity.class);
+
             frmBusq.setPermiteFumar(swFumadores.isSelected() ? true : null); //Assume no preference if off
-            frmBusq.setHuespedes(Integer.getInteger(txtHuespedes.getText().toString()));
+
+            try {
+                frmBusq.setHuespedes(Integer.parseInt(txtHuespedes.getText().toString()));
+            } catch(NumberFormatException nfe) {
+                frmBusq.setHuespedes(null);
+            }
+
             i.putExtra("esBusqueda",true);
             i.putExtra("frmBusqueda",frmBusq);
             startActivity(i);
