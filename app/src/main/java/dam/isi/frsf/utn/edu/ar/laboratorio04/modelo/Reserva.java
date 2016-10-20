@@ -1,6 +1,7 @@
 package dam.isi.frsf.utn.edu.ar.laboratorio04.modelo;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -14,7 +15,7 @@ public class Reserva implements Serializable {
     private Departamento departamento;
     private Double precio;
     private Usuario usuario;
-    private Boolean confirmada;
+    private Boolean confirmada = false;
 
     public Reserva(){}
 
@@ -71,8 +72,6 @@ public class Reserva implements Serializable {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-
-
     }
 
 
@@ -84,4 +83,13 @@ public class Reserva implements Serializable {
         this.confirmada = confirmada;
     }
 
+    static private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+
+    @Override
+    public String toString() {
+        return departamento.getDescripcion()
+                + " [" + dateFormat.format(fechaInicio)
+                + " - " + dateFormat.format(fechaFin) + "] "
+                + (confirmada ? "Confirmada" : "Pendiente");
+    }
 }
