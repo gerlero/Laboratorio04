@@ -5,5 +5,17 @@
     <string name="navigation_drawer_open">Mostrar Opciones</string>
     <string name="navigation_drawer_close">Ocultar Opciones</string>
 
-    <string name="action_settings">Configuracion</string>
+    <string name="action_settings">Configuración</string>
+    <string name="title_activity_settings">Configuración</string>
+
+    <!-- Strings related to Settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_header_notifications">Notificaciones</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silencio</string>
+
+    <string name="pref_title_username">Nombre de usuario</string>
+    <string name="pref_title_email_address">Correo electrónico</string>
 </resources>
