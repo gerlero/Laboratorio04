@@ -1,5 +1,10 @@
 package dam.isi.frsf.utn.edu.ar.laboratorio04;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.icu.util.Calendar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,13 +45,24 @@ public class AltaReservaActivity extends AppCompatActivity implements View.OnCli
 
             case R.id.makeReservationButton:
 
+                //Make the reservation
                 Date startDate = new Date(startDatePicker.getYear(), startDatePicker.getMonth(), startDatePicker.getDayOfMonth());
                 Date endDate = new Date(endDatePicker.getYear(), endDatePicker.getMonth(), endDatePicker.getDayOfMonth());
 
-                Reserva reservation = new Reserva(0, startDate, endDate, selectedApartment);
+                int reservationId = MainActivity.currentUser.getReservas().size();
+
+                Reserva reservation = new Reserva(reservationId, startDate, endDate, selectedApartment);
                 reservation.setUsuario(MainActivity.currentUser);
                 selectedApartment.getReservas().add(reservation);
                 MainActivity.currentUser.getReservas().add(reservation);
+
+                //Set the required alarm
+                Intent intent = new Intent(this, AlarmReceiver.class);
+                intent.putExtra("reservationId", reservationId);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, reservationId, intent, 0);
+
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, 15000, pendingIntent);
 
                 finish();
                 break;
