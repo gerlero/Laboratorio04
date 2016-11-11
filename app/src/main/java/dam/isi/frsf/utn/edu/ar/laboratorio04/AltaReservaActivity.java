@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import java.util.Date;
 
@@ -63,6 +64,9 @@ public class AltaReservaActivity extends AppCompatActivity implements View.OnCli
 
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, 15000, pendingIntent);
+
+                //Tell the user what's happening
+                Toast.makeText(this, "¡Gracias! Tu reserva está pendiente. Te avisaremos cuando sea confirmada", Toast.LENGTH_SHORT);
 
                 finish();
                 break;
