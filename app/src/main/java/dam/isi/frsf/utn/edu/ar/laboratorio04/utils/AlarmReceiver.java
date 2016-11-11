@@ -1,4 +1,4 @@
-package dam.isi.frsf.utn.edu.ar.laboratorio04;
+package dam.isi.frsf.utn.edu.ar.laboratorio04.utils;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -6,6 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
+import dam.isi.frsf.utn.edu.ar.laboratorio04.ReservationConfirmationReceiver;
 
 public class AlarmReceiver extends BroadcastReceiver {
 

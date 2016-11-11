@@ -4,10 +4,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.icu.util.Calendar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -17,7 +15,7 @@ import java.util.Date;
 
 import dam.isi.frsf.utn.edu.ar.laboratorio04.modelo.Departamento;
 import dam.isi.frsf.utn.edu.ar.laboratorio04.modelo.Reserva;
-import dam.isi.frsf.utn.edu.ar.laboratorio04.modelo.Usuario;
+import dam.isi.frsf.utn.edu.ar.laboratorio04.utils.AlarmReceiver;
 
 public class AltaReservaActivity extends AppCompatActivity implements View.OnClickListener {
 
