@@ -1,10 +1,9 @@
 package dam.isi.frsf.utn.edu.ar.laboratorio04;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.SwitchCompat;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -27,6 +26,7 @@ import android.widget.TextView;
 import java.util.Arrays;
 
 import dam.isi.frsf.utn.edu.ar.laboratorio04.modelo.Ciudad;
+import dam.isi.frsf.utn.edu.ar.laboratorio04.modelo.Usuario;
 import dam.isi.frsf.utn.edu.ar.laboratorio04.utils.FormBusqueda;
 
 public class MainActivity extends AppCompatActivity
@@ -42,6 +42,9 @@ public class MainActivity extends AppCompatActivity
     private EditText txtHuespedes;
     private Switch swFumadores;
     private FormBusqueda frmBusq;
+
+    static public Usuario currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +80,21 @@ public class MainActivity extends AppCompatActivity
 
         btnBuscar = (Button) findViewById(R.id.btnBuscar);
         btnBuscar.setOnClickListener(btnBusarListener);
+
+        currentUser = new Usuario();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //Refresh current user
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        currentUser.setNombre(prefs.getString("username", ""));
+        currentUser.setCorreo(prefs.getString("email_address", ""));
+
+        Log.d("MainActivity", "user is " + currentUser.getNombre() + "(" + currentUser.getCorreo() +
+                ", " + currentUser.getReservas().size() + " reservations)");
     }
 
 
@@ -188,7 +206,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_perfil:
                 break;
             case R.id.nav_reservas:
-                Intent i2 = new Intent(MainActivity.this, ReservationList.class);
+                Intent i2 = new Intent(MainActivity.this, ReservationListActivity.class);
                 startActivity(i2);
                 break;
             case R.id.nav_destinos:

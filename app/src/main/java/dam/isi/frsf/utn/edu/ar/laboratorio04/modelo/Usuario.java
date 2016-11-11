@@ -1,6 +1,7 @@
 package dam.isi.frsf.utn.edu.ar.laboratorio04.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,8 +10,9 @@ import java.util.List;
 public class Usuario implements Serializable {
 
     private Integer id;
+    private String nombre;
     private String correo;
-    private List<Reserva> reservas;
+    private List<Reserva> reservas = new ArrayList<>();
     private Integer puntosSuperPremio;
 
 
@@ -21,6 +23,10 @@ public class Usuario implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public String getNombre() { return nombre; }
+
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
     public String getCorreo() {
         return correo;
